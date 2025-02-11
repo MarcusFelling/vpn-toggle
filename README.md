@@ -21,6 +21,10 @@ Access these commands through the Command Palette (Ctrl+Shift+P):
 
 ## 🚚 Release Notes
 
+### 0.0.3
+
+Show "Select and Connect" command first
+
 ### 0.0.2
 
 Support VS Code engines v1+
