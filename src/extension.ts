@@ -3,8 +3,9 @@ import { vpnService } from './vpnUtils';
 
 let disposables: vscode.Disposable[] = [];
 
+// Called when the extension is activated.
 export function activate(context: vscode.ExtensionContext) {
-    // Clear any existing commands
+    // Clear previously registered commands.
     disposables.forEach(d => {
         try {
             d.dispose();
@@ -16,11 +17,13 @@ export function activate(context: vscode.ExtensionContext) {
 
     let lastUsedVPN = context.globalState.get<string>('lastUsedVPN');
 
+    // Helper to show error messages.
     const showError = (error: unknown) => {
         const message = error instanceof Error ? error.message : 'Unknown error occurred';
         vscode.window.showErrorMessage(`VPN Error: ${message}`);
     };
 
+    // Register connect command.
     let connectCmd = vscode.commands.registerCommand('vpn-toggle.connectVPN', async () => {
         if (!lastUsedVPN) {
             vscode.window.showErrorMessage('No VPN connection has been used yet. Please select a VPN first.');
@@ -35,6 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
+    // Register disconnect command.
     let disconnectCmd = vscode.commands.registerCommand('vpn-toggle.disconnectVPN', async () => {
         if (!lastUsedVPN) {
             vscode.window.showErrorMessage('No VPN connection has been used yet.');
@@ -49,6 +53,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
+    // Register select/connect command.
     let selectCmd = vscode.commands.registerCommand('vpn-toggle.selectAndConnectVPN', async () => {
         try {
             const connections = await vpnService.getConnections();
@@ -73,12 +78,14 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
+    // Add commands to subscriptions.
     disposables = [selectCmd, connectCmd, disconnectCmd];
     context.subscriptions.push(...disposables);
 }
 
+// Called when the extension is deactivated.
 export function deactivate() {
-    // Dispose all commands
+    // Dispose registered commands.
     disposables.forEach(d => {
         try {
             d.dispose();

@@ -9,6 +9,7 @@ export interface VPNConnection {
 }
 
 export class VPNService {
+    // Execute a PowerShell command and return trimmed stdout.
     private async executePowerShell(command: string): Promise<string> {
         try {
             const { stdout } = await exec(`powershell.exe -Command "${command}"`);
@@ -19,9 +20,10 @@ export class VPNService {
         }
     }
 
+    // Retrieve VPN connections.
     async getConnections(): Promise<VPNConnection[]> {
         try {
-            // Use Get-VpnConnection which is simpler and more reliable
+            // Get VPN connections as JSON.
             const command = "Get-VpnConnection | Select-Object -Property Name,ConnectionStatus | ConvertTo-Json";
             const { stdout } = await exec(`powershell.exe -NoProfile -Command "${command}"`);
             console.log('PowerShell output:', stdout);
@@ -55,6 +57,7 @@ export class VPNService {
         }
     }
 
+    // Connect to a VPN.
     async connect(connectionName: string): Promise<void> {
         try {
             await exec(`rasdial "${connectionName}"`);
@@ -63,6 +66,7 @@ export class VPNService {
         }
     }
 
+    // Disconnect from a VPN.
     async disconnect(connectionName: string): Promise<void> {
         try {
             await exec(`rasdial "${connectionName}" /DISCONNECT`);
@@ -72,4 +76,5 @@ export class VPNService {
     }
 }
 
+// Export a VPNService instance.
 export const vpnService = new VPNService();
