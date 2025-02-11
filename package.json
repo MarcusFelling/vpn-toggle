@@ -2,7 +2,7 @@
   "name": "vpn-toggle",
   "displayName": "vpn-toggle",
   "description": "Easily toggle Windows VPN connects on/off",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "MFelling",
   "icon": "icon.png",
   "engines": {

@@ -73,7 +73,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
-    disposables = [connectCmd, disconnectCmd, selectCmd];
+    disposables = [selectCmd, connectCmd, disconnectCmd];
     context.subscriptions.push(...disposables);
 }
 
