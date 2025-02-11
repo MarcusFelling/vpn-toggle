@@ -21,8 +21,9 @@ export class VPNService {
 
     async getConnections(): Promise<VPNConnection[]> {
         try {
+            // Use Get-VpnConnection which is simpler and more reliable
             const command = "Get-VpnConnection | Select-Object -Property Name,ConnectionStatus | ConvertTo-Json";
-            const stdout = await this.executePowerShell(`-NoProfile -Command "${command}"`);
+            const { stdout } = await exec(`powershell.exe -NoProfile -Command "${command}"`);
             console.log('PowerShell output:', stdout);
 
             if (!stdout.trim()) {
@@ -56,7 +57,7 @@ export class VPNService {
 
     async connect(connectionName: string): Promise<void> {
         try {
-            await this.executePowerShell(`rasdial "${connectionName}"`);
+            await exec(`rasdial "${connectionName}"`);
         } catch (error) {
             throw new Error(`Failed to connect to VPN "${connectionName}": ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
@@ -64,7 +65,7 @@ export class VPNService {
 
     async disconnect(connectionName: string): Promise<void> {
         try {
-            await this.executePowerShell(`rasdial "${connectionName}" /DISCONNECT`);
+            await exec(`rasdial "${connectionName}" /DISCONNECT`);
         } catch (error) {
             throw new Error(`Failed to disconnect VPN "${connectionName}": ${error instanceof Error ? error.message : 'Unknown error'}`);
         }

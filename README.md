@@ -21,6 +21,10 @@ Access these commands through the Command Palette (Ctrl+Shift+P):
 
 ## 🚚 Release Notes
 
+### 0.0.4
+
+Fix regression
+
 ### 0.0.3
 
 Show "Select and Connect" command first
