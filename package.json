@@ -4,7 +4,7 @@
   "description": "Easily toggle Windows VPN connects on/off",
   "version": "0.0.1",
   "publisher": "MFelling",
-  "icon": "icon.png",  
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.97.0"
   },
@@ -16,7 +16,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MarcusFelling/vpn-toggle.git"
-  },   
+  },
   "contributes": {
     "commands": [
       {
