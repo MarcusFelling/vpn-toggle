@@ -1,4 +1,4 @@
-name: Build, Test, Deploy
+name: Test, Package, and Upload VS Code Extension
 
 on:
   workflow_dispatch:
@@ -27,3 +27,14 @@ jobs:
 
       - name: Run tests
         run: xvfb-run -a npm test
+
+      - name: Package extension
+        run: |
+          npm install -g @vscode/vsce
+          vsce package
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: vsix-package
+          path: '*.vsix'

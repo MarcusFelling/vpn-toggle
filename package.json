@@ -2,7 +2,7 @@
   "name": "vpn-toggle",
   "displayName": "vpn-toggle",
   "description": "Easily toggle Windows VPN connects on/off",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "MFelling",
   "icon": "icon.png",
   "engines": {
@@ -11,6 +11,12 @@
   "categories": [
     "Other"
   ],
+  "os": [
+    "win32"
+  ],
+  "pricing": "Free",
+  "license": "MIT",
+
   "activationEvents": [],
   "main": "./out/extension.js",
   "repository": {
