@@ -10,7 +10,7 @@ on:
       - '*'
 
 jobs:
-  buildTestDeploy:
+  testPackageUpload:
     runs-on: windows-2022
 
     steps:
