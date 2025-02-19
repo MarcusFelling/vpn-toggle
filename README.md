@@ -23,6 +23,10 @@ Access these commands through the Command Palette (Ctrl+Shift+P):
 
 ## 🚚 Release Notes
 
+### 0.0.6
+
+Show progress indicator when running each command
+
 ### 0.0.5
 
 Add Win32 OS to extension manifest

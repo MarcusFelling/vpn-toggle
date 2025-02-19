@@ -23,40 +23,39 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.showErrorMessage(`VPN Error: ${message}`);
     };
 
-    // Register connect command.
+    // Register connect command with progress indicator.
     let connectCmd = vscode.commands.registerCommand('vpn-toggle.connectVPN', async () => {
         if (!lastUsedVPN) {
             vscode.window.showErrorMessage('No VPN connection has been used yet. Please select a VPN first.');
             return;
         }
-
-        try {
-            await vpnService.connect(lastUsedVPN);
-            vscode.window.showInformationMessage(`Connected to VPN: ${lastUsedVPN}`);
-        } catch (error) {
-            showError(error);
-        }
+        const currentVPN = lastUsedVPN;
+        await vscode.window.withProgress({ title: `Connecting to VPN: ${currentVPN}`, location: vscode.ProgressLocation.Notification }, async () => {
+            await vpnService.connect(currentVPN);
+        });
+        vscode.window.showInformationMessage(`Connected to VPN: ${currentVPN}`);
     });
-
-    // Register disconnect command.
+    // Register disconnect command with progress indicator.
     let disconnectCmd = vscode.commands.registerCommand('vpn-toggle.disconnectVPN', async () => {
         if (!lastUsedVPN) {
             vscode.window.showErrorMessage('No VPN connection has been used yet.');
             return;
         }
-
-        try {
-            await vpnService.disconnect(lastUsedVPN);
-            vscode.window.showInformationMessage(`Disconnected from VPN: ${lastUsedVPN}`);
-        } catch (error) {
-            showError(error);
-        }
+        const currentVPN = lastUsedVPN;
+        await vscode.window.withProgress({ title: `Disconnecting from VPN: ${currentVPN}`, location: vscode.ProgressLocation.Notification }, async () => {
+            await vpnService.disconnect(currentVPN);
+        });
+        vscode.window.showInformationMessage(`Disconnected from VPN: ${currentVPN}`);
     });
 
-    // Register select/connect command.
+    // Register select/connect command with progress indicator.
     let selectCmd = vscode.commands.registerCommand('vpn-toggle.selectAndConnectVPN', async () => {
         try {
-            const connections = await vpnService.getConnections();
+            // Show progress while fetching connections.
+            const connections = await vscode.window.withProgress(
+                { title: "Getting VPN connections...", location: vscode.ProgressLocation.Notification },
+                async () => await vpnService.getConnections()
+            );
             const items = connections.map(c => ({
                 label: c.name,
                 description: c.status
@@ -68,7 +67,10 @@ export function activate(context: vscode.ExtensionContext) {
             });
 
             if (selected) {
-                await vpnService.connect(selected.label);
+                await vscode.window.withProgress(
+                    { title: `Connecting to VPN: ${selected.label}`, location: vscode.ProgressLocation.Notification },
+                    async () => await vpnService.connect(selected.label)
+                );
                 lastUsedVPN = selected.label;
                 await context.globalState.update('lastUsedVPN', selected.label);
                 vscode.window.showInformationMessage(`Connected to VPN: ${selected.label}`);
