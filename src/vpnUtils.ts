@@ -1,7 +1,8 @@
-import { exec as execCallback } from 'child_process';
+import { exec as execCallback, execFile } from 'child_process';
 import { promisify } from 'util';
 
 const exec = promisify(execCallback);
+const execFilePromisified = promisify(execFile);
 
 export interface VPNConnection {
     name: string;
@@ -57,19 +58,19 @@ export class VPNService {
         }
     }
 
-    // Connect to a VPN.
+    // Connect to a VPN using execFile for faster startup.
     async connect(connectionName: string): Promise<void> {
         try {
-            await exec(`rasdial "${connectionName}"`);
+            await execFilePromisified("rasdial", [connectionName]);
         } catch (error) {
             throw new Error(`Failed to connect to VPN "${connectionName}": ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
     }
 
-    // Disconnect from a VPN.
+    // Disconnect from a VPN using execFile for faster execution.
     async disconnect(connectionName: string): Promise<void> {
         try {
-            await exec(`rasdial "${connectionName}" /DISCONNECT`);
+            await execFilePromisified("rasdial", [connectionName, "/DISCONNECT"]);
         } catch (error) {
             throw new Error(`Failed to disconnect VPN "${connectionName}": ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
