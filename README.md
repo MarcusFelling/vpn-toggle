@@ -4,9 +4,12 @@ A Visual Studio Code extension to easily toggle Windows VPN connections on/off.
 
 ![build deploy](https://github.com/MarcusFelling/vpn-toggle/actions/workflows/build-deploy.yml/badge.svg)
 
+![demo](https://github.com/user-attachments/assets/e699a3af-c323-4fec-9ac8-1b67fcf4dae1)
+
 ## ⚙️ Prerequisites
 
 - Windows 10 or later
+
 - Configured VPN connections in Windows
 
 ## ✅ Features
